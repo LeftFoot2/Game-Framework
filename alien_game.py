@@ -22,13 +22,53 @@ screen_width = 600
 screen_height = 800
 screen_title = "Alien Game"
 
-class Alien_Game(arcade.Window):
+class Start_Screen(arcade.View):
+    def on_show_view(self):
+        arcade.set_background_color(arcade.csscolor.BLUE)
+
+    
+    def on_draw(self):
+        self.clear()
+        arcade.draw_text('Alien Game', screen_width / 2, screen_height / 1.75, arcade.color.WHITE, font_size=50, anchor_x="center")
+        arcade.draw_text('Click to start', screen_width / 2, screen_height / 1.75 - 75, arcade.color.WHITE, font_size=20, anchor_x="center")
+        arcade.draw_text("Press: 'A' to move left, 'D' to move right, Spacebar to shoot", screen_width / 2, screen_height / 1.75 - 135, arcade.color.WHITE, font_size=10, anchor_x="center")
+
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        game_view = Alien_Game()
+        game_view.setup()
+        self.window.show_view(game_view)
+
+class End_Screen(arcade.View):
+
+    def __init__(self):
+        super().__init__()
+        self.texture = arcade.load_texture('End_game_alien.png')
+
+    def on_draw(self):
+        self.clear()
+        self.texture.draw_sized(screen_width / 2, screen_height / 2, screen_width, screen_height)
+
+    def on_key_press(self, symbol, modifiers):
+        if symbol == arcade.key.ESCAPE:
+            arcade.close_window()
+        
+        if symbol == arcade.key.ENTER:
+            game_view = Alien_Game()
+            game_view.setup()
+            self.window.show_view(game_view)
+
+
+class Alien_Game(arcade.View):#Window):
 
 
     # Used to initiate main variables.
     def __init__(self):
 
-        super().__init__(screen_width, screen_height, screen_title)
+        super().__init__()#screen_width, screen_height, screen_title)
+
+        self.texture = arcade.load_texture('alien_game_background.png')
+
 
         self.alien_list = None
         self.bullet_list = None
@@ -50,9 +90,12 @@ class Alien_Game(arcade.Window):
 
         # I couldn't figure out how to just set the background to my image so I made it into a sprite.
 
-        self.background = arcade.Sprite('alien_game_background.png', 1.15)
-        self.background.center_x = 325
-        self.background.center_y = 425
+
+        # self.background = arcade.Sprite('alien_game_background.png', 1.15)
+        # self.background.center_x = 325
+        # self.background.center_y = 425
+
+
 
         # Make each list a sprite list append sprites to later.
 
@@ -95,8 +138,8 @@ class Alien_Game(arcade.Window):
 
         self.alien.change_y = alien_speed
 
-        self.alien.bottom = self.height
-        self.alien.left = random.randint(0, self.width - 70)
+        self.alien.bottom = screen_height
+        self.alien.left = random.randint(0, screen_width - 70)
         self.alien_list.append(self.alien)
 
 
@@ -162,8 +205,8 @@ class Alien_Game(arcade.Window):
                 # If the earth losses all its health it will close the window.
 
                 if self.earth_health < 1:
-                    arcade.close_window()
-                    print('You lost.')
+                    game_over_view = End_Screen()
+                    self.window.show_view(game_over_view)
 
 
         # Used to remove bullets if they hit an allen or go off the top of the screen.
@@ -186,8 +229,8 @@ class Alien_Game(arcade.Window):
 
         # Prevents player form going of the screen.
 
-        if self.player.right > self.width:
-            self.player.right = self.width
+        if self.player.right > screen_width:
+            self.player.right = screen_width
 
         if self.player.left < 0:
             self.player.left = 0
@@ -196,9 +239,12 @@ class Alien_Game(arcade.Window):
 
     def on_draw(self):
 
+        self.clear()
+
         arcade.start_render()
 
-        self.background.draw()
+        # self.background.draw()
+        self.texture.draw_sized(screen_width/2, screen_height/2, screen_width, screen_height)
         self.earth_list.draw()
         self.person_list.draw()
         self.alien_list.draw()
@@ -207,8 +253,11 @@ class Alien_Game(arcade.Window):
 # Starts the game.
 
 if __name__ == '__main__':
-    game = Alien_Game()
-    game.setup()
+    window = arcade.Window(screen_width, screen_height, screen_title)
+    # game = Alien_Game()
+    start_view = Start_Screen()
+    window.show_view(start_view)
+    # game.setup()
     arcade.run()
 
 

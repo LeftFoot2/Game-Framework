@@ -150,13 +150,12 @@ class Alien_Game(arcade.View):#Window):
         # Pressing D will move player to the right.
 
         if symbol == arcade.key.D:
-
-            self.player.change_x = player_speed
+            self.player.change_x += player_speed
 
         # Pressing A will move player to the left.
 
         if symbol == arcade.key.A:
-            self.player.change_x = -player_speed
+            self.player.change_x -= player_speed
 
         # Pressing the spacebar will create and shoot a bullet out of cannon.
 
@@ -175,12 +174,14 @@ class Alien_Game(arcade.View):#Window):
     def on_key_release(self, symbol, modifiers):
 
         # Used to stop player from moving after key release.
-
+        print(self.player.change_x)
+    
         if symbol == arcade.key.D:
-            self.player.change_x = 0
+
+            self.player.change_x -= player_speed
 
         if symbol == arcade.key.A:
-            self.player.change_x = 0
+            self.player.change_x += player_speed
 
     # Function allows for the game to update frequently. Allowing for movement of sprits.
 

@@ -6,7 +6,7 @@ I wrote this to improve my programming skills. I really just need more practice 
 
 Watch a demonstration video here.
 
-[A look at the code and game]()
+[A look at the code and game](https://youtu.be/nVMRR6tZu8A)
 
 # Development Environment
 

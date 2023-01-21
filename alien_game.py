@@ -156,7 +156,7 @@ class Alien_Game(arcade.View):#Window):
 
     def on_key_press(self, symbol, modifiers):
         
-        # Pressing D will move player to the right.
+        # Pressing D will move player to the right. My brother helped me with the movement so it was better.
 
         if symbol == arcade.key.D:
             self.player.change_x += player_speed

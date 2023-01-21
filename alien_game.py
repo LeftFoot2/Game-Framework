@@ -22,24 +22,33 @@ screen_width = 600
 screen_height = 750
 screen_title = "Alien Game"
 
+# Used to change the speed of aliens as levels go up.
 alien_speed_rate = .2
 
+
+# This class is for the start screen which also tells the player how to play.
+
 class Start_Screen(arcade.View):
+    # This sets the background color.
     def on_show_view(self):
         arcade.set_background_color(arcade.csscolor.BLUE)
 
-    
+    # Draws the necessary text on the screen so the player knows how to play.
     def on_draw(self):
         self.clear()
         arcade.draw_text('Alien Game', screen_width / 2, screen_height / 1.75, arcade.color.WHITE, font_size=50, anchor_x="center")
         arcade.draw_text('Click to start', screen_width / 2, screen_height / 1.75 - 75, arcade.color.WHITE, font_size=20, anchor_x="center")
         arcade.draw_text("Press: 'A' to move left, 'D' to move right, Spacebar to shoot", screen_width / 2, screen_height / 1.75 - 135, arcade.color.WHITE, font_size=10, anchor_x="center")
 
-
+    # Allows the game to start once the screen is clicked.
     def on_mouse_press(self, x, y, button, modifiers):
+
+        # Runs the main python class and the game.
         game_view = Alien_Game()
         game_view.setup()
         self.window.show_view(game_view)
+
+# This class creates a screen for after you loss. The player will have the choice to play again or exit the game.
 
 class End_Screen(arcade.View):
 
@@ -51,11 +60,13 @@ class End_Screen(arcade.View):
         self.clear()
         self.texture.draw_sized(screen_width / 2, screen_height / 2, screen_width, screen_height)
 
+    # Makes it so the player can choose to play again or not.
     def on_key_press(self, symbol, modifiers):
         if symbol == arcade.key.ESCAPE:
             arcade.close_window()
         
         if symbol == arcade.key.ENTER:
+            # Resets up the the python game so you can play from the start.
             game_view = Alien_Game()
             game_view.setup()
             self.window.show_view(game_view)
@@ -67,7 +78,7 @@ class Alien_Game(arcade.View):#Window):
     # Used to initiate main variables.
     def __init__(self):
 
-        super().__init__()#screen_width, screen_height, screen_title)
+        super().__init__()
 
         self.texture = arcade.load_texture('alien_game_background.png')
         self.heart_texture = arcade.load_texture('heart.png')
@@ -86,7 +97,7 @@ class Alien_Game(arcade.View):#Window):
         
         self.alien_count = 0
 
-        # Level alterations
+        # Level alteration
         self.level = 1
 
 
@@ -96,16 +107,6 @@ class Alien_Game(arcade.View):#Window):
         
     def setup(self):
 
-
-        # I couldn't figure out how to just set the background to my image so I made it into a sprite.
-
-
-        # self.background = arcade.Sprite('alien_game_background.png', 1.15)
-        # self.background.center_x = 325
-        # self.background.center_y = 425
-
-
-
         # Make each list a sprite list append sprites to later.
 
         self.alien_list = arcade.SpriteList()
@@ -113,8 +114,6 @@ class Alien_Game(arcade.View):#Window):
         self.canon_list = arcade.SpriteList()
         self.person_list = arcade.SpriteList()
         self.earth_list = arcade.SpriteList()
-
-
 
         # The earth need to be a sprite to the aliens could clyde with it.
 
@@ -204,8 +203,6 @@ class Alien_Game(arcade.View):#Window):
         self.player.update()
         self.bullet_list.update()
 
-
-
         # Used to check if an alien has hit the earth and if so removes a health from the earth.
 
         for alien in self.alien_list:
@@ -262,7 +259,7 @@ class Alien_Game(arcade.View):#Window):
         if self.player.left < 0:
             self.player.left = 0
 
-    # Draws all the sprites onto the window.
+    # Draws all the sprites and text onto the window.
 
     def on_draw(self):
 
@@ -270,7 +267,6 @@ class Alien_Game(arcade.View):#Window):
 
         arcade.start_render()
 
-        # self.background.draw()
         self.texture.draw_sized(screen_width/2, screen_height/2, screen_width, screen_height)
         self.heart_texture.draw_sized(screen_width/8, 75, 50, 15)
         self.earth_list.draw()
@@ -279,14 +275,12 @@ class Alien_Game(arcade.View):#Window):
         self.bullet_list.draw()
         arcade.draw_text(f'Level: {self.level}', screen_width / 10, screen_height / 1.05, arcade.color.BLACK, font_size=15, anchor_x="center")
         
-# Starts the game.
+# Gets the start menu up. The game will be started from that class.
 
 if __name__ == '__main__':
     window = arcade.Window(screen_width, screen_height, screen_title)
-    # game = Alien_Game()
     start_view = Start_Screen()
     window.show_view(start_view)
-    # game.setup()
     arcade.run()
 
 

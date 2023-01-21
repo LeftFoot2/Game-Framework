@@ -1,12 +1,12 @@
 # Overview
 
-The point of this game is to defend earth from invading aliens. You use the key 'A' to move to the left and the key 'D' to move right. Spacebar will shoot bullets at the aliens. The earth only has three lives and if three aliens make it to the earth then the window will close and you have lost.
+The point of this game is to defend earth from invading aliens. You use the key 'A' to move to the left and the key 'D' to move right. Spacebar will shoot bullets at the aliens. You will have a start up screen that you will have to click to start the game. The earth only has three lives and if three aliens make it to the earth then a window will appear to see if you want to play again or exit.
 
 I wrote this to improve my programming skills. I really just need more practice and this has helped a lot in helping me figure out the details of python and the arcade library.
 
 Watch a demonstration video here.
 
-[A look at the code and game](https://youtu.be/Oq-KucLQwrs)
+[A look at the code and game]()
 
 # Development Environment
 
@@ -27,7 +27,6 @@ random library
 There are quite a few things I wish to still add to this game. The following is a good list of what I hope to accomplish.
 
 * Score system
-* Increased difficultly
 * Upgrading player: movement speed, bullet count
 * Sound
-* Limited number of bullets on the screen at one time
+* A way to have high scores

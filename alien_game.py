@@ -22,8 +22,7 @@ screen_width = 600
 screen_height = 750
 screen_title = "Alien Game"
 
-
-
+alien_speed_rate = .2
 
 class Start_Screen(arcade.View):
     def on_show_view(self):
@@ -89,8 +88,7 @@ class Alien_Game(arcade.View):#Window):
 
         # Level alterations
         self.level = 1
-        # self.alien_spawn_rate = .3
-        self.alien_speed_rate = .2
+
 
 
 
@@ -148,7 +146,7 @@ class Alien_Game(arcade.View):#Window):
     def add_alien(self, delta_time: float):
         self.alien = arcade.Sprite("alien.png", alien_size)
 
-        self.alien.change_y = alien_speed - self.alien_speed_rate * self.level
+        self.alien.change_y = alien_speed - alien_speed_rate * self.level
 
         self.alien.bottom = screen_height
         self.alien.left = random.randint(0, screen_width - 70)
@@ -171,16 +169,18 @@ class Alien_Game(arcade.View):#Window):
 
         # Pressing the spacebar will create and shoot a bullet out of cannon.
 
-        if symbol == arcade.key.SPACE:
+        if len(self.bullet_list) < 4:
 
-            self.bullet = arcade.Sprite("alien_bullet.png", bullet_size)
+            if symbol == arcade.key.SPACE:
 
-            self.bullet.change_y = bullet_speed
+                self.bullet = arcade.Sprite("alien_bullet.png", bullet_size)
 
-            self.bullet.center_x = self.player.center_x + 2
-            self.bullet.bottom = self.player.top
+                self.bullet.change_y = bullet_speed
 
-            self.bullet_list.append(self.bullet)
+                self.bullet.center_x = self.player.center_x + 2
+                self.bullet.bottom = self.player.top
+
+                self.bullet_list.append(self.bullet)
 
 
     def on_key_release(self, symbol, modifiers):
@@ -245,7 +245,6 @@ class Alien_Game(arcade.View):#Window):
                 bullet.remove_from_sprite_lists()
 
                 if self.alien_count > 2:
-                    print(self.level)
                     self.level += 1
                     self.alien_count = 0
 

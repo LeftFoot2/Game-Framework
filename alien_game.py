@@ -7,6 +7,8 @@ Written in python using arcade and random library.
 
 import random
 import arcade
+import arcade.gui
+from SQLite_leaderboard import *
 
 # Different variables for sizes or speeds so they can be adjusted easily.
 
@@ -26,9 +28,38 @@ screen_title = "Alien Game"
 alien_speed_rate = .2
 
 
+
 # This class is for the start screen which also tells the player how to play.
 
 class Start_Screen(arcade.View):
+
+    def __init__(self):
+        super().__init__()
+        self.manager = arcade.gui.UIManager()
+        self.manager.enable()
+
+        self.v_box = arcade.gui.UIBoxLayout()
+
+        start_button = arcade.gui.UIFlatButton(text="Start Game", width=200)
+
+        self.v_box.add(start_button.with_space_around(bottom=20))
+
+        leaderboard_button = arcade.gui.UIFlatButton(text="Leaderboard", width=200)
+
+        self.v_box.add(leaderboard_button.with_space_around(bottom=20))
+
+        self.manager.add(arcade.gui.UIAnchorWidget(
+            anchor_x="center_x",
+            anchor_y="center_y",
+            child=self.v_box)
+
+        )
+
+        start_button.on_click = self.on_click_start
+
+        leaderboard_button.on_click = self.on_click_leaderboard
+
+
     # This sets the background color.
     def on_show_view(self):
         arcade.set_background_color(arcade.csscolor.BLUE)
@@ -36,17 +67,21 @@ class Start_Screen(arcade.View):
     # Draws the necessary text on the screen so the player knows how to play.
     def on_draw(self):
         self.clear()
-        arcade.draw_text('Alien Game', screen_width / 2, screen_height / 1.75, arcade.color.WHITE, font_size=50, anchor_x="center")
-        arcade.draw_text('Click to start', screen_width / 2, screen_height / 1.75 - 75, arcade.color.WHITE, font_size=20, anchor_x="center")
-        arcade.draw_text("Press: 'A' to move left, 'D' to move right, Spacebar to shoot", screen_width / 2, screen_height / 1.75 - 135, arcade.color.WHITE, font_size=10, anchor_x="center")
+        self.manager.draw()
+        arcade.draw_text('Alien Game', screen_width / 2, screen_height / 1.6, arcade.color.WHITE, font_size=50, anchor_x="center")
+        # arcade.draw_text('Click to start', screen_width / 2, screen_height / 1.75 - 75, arcade.color.WHITE, font_size=20, anchor_x="center")
+        arcade.draw_text("Press: 'A' to move left, 'D' to move right, Spacebar to shoot", screen_width / 2, screen_height / 1.75 - 136, arcade.color.WHITE, font_size=10, anchor_x="center")
 
-    # Allows the game to start once the screen is clicked.
-    def on_mouse_press(self, x, y, button, modifiers):
 
-        # Runs the main python class and the game.
+    def on_click_start(self, event):
         game_view = Alien_Game()
         game_view.setup()
         self.window.show_view(game_view)
+
+    def on_click_leaderboard(self, event):
+        pass
+    # Allows the game to start once the screen is clicked.
+
 
 # This class creates a screen for after you loss. The player will have the choice to play again or exit the game.
 
@@ -99,6 +134,8 @@ class Alien_Game(arcade.View):#Window):
 
         # Level alteration
         self.level = 1
+
+        self.leaderboard_list = []
 
 
 
@@ -220,8 +257,18 @@ class Alien_Game(arcade.View):#Window):
                 # If the earth losses all its health it will close the window.``
 
                 if self.earth_health < 1:
+                    # Input into the table the level and other info.
+                    # if len(leaderboard_list) < 10:
+
+
+                        
+                    self.leaderboard_list = input_player_info(self.level)
+
+                    modify_leaderboard()
+
                     game_over_view = End_Screen()
                     self.window.show_view(game_over_view)
+
 
 
         # Used to remove bullets if they hit an allen or go off the top of the screen.
@@ -231,7 +278,7 @@ class Alien_Game(arcade.View):#Window):
 
             hit_alien = arcade.check_for_collision_with_list(bullet, self.alien_list)
 
-            if bullet.bottom > 800:
+            if bullet.bottom > screen_height:
                 bullet.remove_from_sprite_lists()
 
             if hit_alien:
@@ -274,7 +321,8 @@ class Alien_Game(arcade.View):#Window):
         self.alien_list.draw()
         self.bullet_list.draw()
         arcade.draw_text(f'Level: {self.level}', screen_width / 10, screen_height / 1.05, arcade.color.BLACK, font_size=15, anchor_x="center")
-        
+
+
 # Gets the start menu up. The game will be started from that class.
 
 if __name__ == '__main__':

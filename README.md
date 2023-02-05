@@ -10,6 +10,12 @@ Watch a demonstration video here.
 
 [A look at the code and game](https://youtu.be/GvB8pzbFSqs)
 
+# Relational Database
+
+I used the SQLite that is built into python. It made it convenet for using it with my python game.
+
+I only made one leaderboard table for this project.
+
 # Development Environment
 
 VS Code
